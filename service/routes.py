@@ -68,16 +68,31 @@ def create_accounts():
 # READ AN ACCOUNT
 ######################################################################
 
-# ... place you code here to READ an account ...
+@app.route("/accounts/<int:account_id>", methods = ["GET"])
+def read_account(account_id):
+    """ Reads the account associated with account_id, if it exists"""
+    account = Account.find(account_id)
+    if not account:
+        abort(status.HTTP_404_NOT_FOUND, f"Account with ID {account_id} cannot be found")
+    return account.serialize(), status.HTTP_200_OK
+
 
 
 ######################################################################
 # UPDATE AN EXISTING ACCOUNT
 ######################################################################
 
-# ... place you code here to UPDATE an account ...
+@app.route("/accounts/<int:account_id>", methods=["POST"])
+def update_account(account_id):
+    """Updates account account associated with account_id, if it exists"""
+    account = Account.find(account_id)
+    if not account:
+        abort(status.HTTP_404_NOT_FOUND, f"Account with ID {account_id} does not exist.")
+    account.deserialize(request.get_json())
+    account.update()
 
-
+    return account.serialize(), status.HTTP_200_OK
+    
 ######################################################################
 # DELETE AN ACCOUNT
 ######################################################################
