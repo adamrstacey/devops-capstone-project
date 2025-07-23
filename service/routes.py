@@ -61,7 +61,11 @@ def create_accounts():
 # LIST ALL ACCOUNTS
 ######################################################################
 
-# ... place you code here to LIST accounts ...
+@app.route("/accounts", methods = ["GET"])
+def list_all_accounts():
+    accounts = Account.all()
+    return_accounts = [account.serialize() for account in accounts]
+    return jsonify(return_accounts), status.HTTP_200_OK
 
 
 ######################################################################
@@ -97,8 +101,13 @@ def update_account(account_id):
 # DELETE AN ACCOUNT
 ######################################################################
 
-# ... place you code here to DELETE an account ...
-
+@app.route("/accounts/<int:account_id>", methods=["DELETE"])
+def delete_account(account_id):
+    account = Account.find(account_id)
+    if not account:
+        abort(status.HTTP_404_NOT_FOUND, "Cannot delete account: account does not exist")
+    account.delete()
+    return "", status.HTTP_204_NO_CONTENT
 
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S

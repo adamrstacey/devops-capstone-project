@@ -168,4 +168,34 @@ class TestAccountService(TestCase):
             f"{BASE_URL}/{str(0)}"
         )
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+    
+    def test_delete_account(self):
+        """ It should delete the account """
+        # Create an account
+        account = self._create_accounts(1)[0]
+        # Delete the account
+        resp = self.client.delete(
+            f"{BASE_URL}/{account.id}"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
+    
+    def test_delete_account_not_found(self):
+        """ It should return a 404 since the account does not exist """
+        resp = self.client.delete(
+            f"{BASE_URL}/{str(0)}"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
+    def test_list_all_accounts(self):
+        """ It should list all accounts """ 
+        # Create five accounts
+        self._create_accounts(5)
+        resp = self.client.get(BASE_URL)
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(5, len(data))
+
+    def test_method_not_allowed(self):
+        """It should not allow an illegal method call"""
+        resp = self.client.delete(BASE_URL)
+        self.assertEqual(resp.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
