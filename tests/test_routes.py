@@ -154,7 +154,7 @@ class TestAccountService(TestCase):
         # Update the account
         new_account = resp.get_json()
         new_account["name"] = "Dean O'Sea"
-        resp = self.client.post(
+        resp = self.client.put(
             f"{BASE_URL}/{new_account['id']}",
             json=new_account
         )
@@ -164,7 +164,7 @@ class TestAccountService(TestCase):
     
     def test_update_account_not_found(self):
         """ It should return a 404 because the account does not exist"""
-        resp = self.client.post(
+        resp = self.client.put(
             f"{BASE_URL}/{str(0)}"
         )
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)

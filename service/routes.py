@@ -86,7 +86,7 @@ def read_account(account_id):
 # UPDATE AN EXISTING ACCOUNT
 ######################################################################
 
-@app.route("/accounts/<int:account_id>", methods=["POST"])
+@app.route("/accounts/<int:account_id>", methods=["PUT"])
 def update_account(account_id):
     """Updates account account associated with account_id, if it exists"""
     account = Account.find(account_id)
