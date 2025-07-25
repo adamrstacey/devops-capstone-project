@@ -57,6 +57,7 @@ def create_accounts():
         jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
     )
 
+
 ######################################################################
 # LIST ALL ACCOUNTS
 ######################################################################
@@ -65,6 +66,7 @@ def list_all_accounts():
     accounts = Account.all()
     return_accounts = [account.serialize() for account in accounts]
     return jsonify(return_accounts), status.HTTP_200_OK
+
 
 ######################################################################
 # READ AN ACCOUNT
@@ -76,6 +78,7 @@ def read_account(account_id):
     if not account:
         abort(status.HTTP_404_NOT_FOUND, f"Account with ID {account_id} cannot be found")
     return account.serialize(), status.HTTP_200_OK
+
 
 ######################################################################
 # UPDATE AN EXISTING ACCOUNT
@@ -91,6 +94,7 @@ def update_account(account_id):
 
     return account.serialize(), status.HTTP_200_OK
 
+
 ######################################################################
 # DELETE AN ACCOUNT
 ######################################################################
@@ -101,6 +105,7 @@ def delete_account(account_id):
         abort(status.HTTP_404_NOT_FOUND, "Cannot delete account: account does not exist")
     account.delete()
     return "", status.HTTP_204_NO_CONTENT
+
 
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S
